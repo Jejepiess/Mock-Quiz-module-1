@@ -11,57 +11,66 @@
         .options { list-style-type: none; padding: 0; }
         .options li { margin: 10px 0; }
         .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
+        .identification { margin: 20px 0; }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h2>Online Quiz Exam</h2>
         <div id="quiz"></div>
+        <div class="identification">
+            <h3>Identification</h3>
+            <p>Provide the correct term for each description:</p>
+            <div id="identification"></div>
+        </div>
         <button onclick="submitQuiz()">Submit</button>
         <div id="result" class="result"></div>
     </div>
 
     <script>
-        const questions = [
-            { question: "What is Organizational Behavior concerned with?", options: ["The actions of people at work", "The study of markets", "The development of products"], answer: "The actions of people at work" },
-            { question: "What are the four aspects of individual behavior in Organizational Behavior?", options: ["Personality, Perception, Learning, Motivation", "Norm roles, Team Building, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics"], answer: "Personality, Perception, Learning, Motivation" },
-            { question: "What are the four group behaviors Organizational Behavior focuses on?", options: ["Norm roles, Team Building, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics", "Personality, Perception, Learning, Motivation"], answer: "Norm roles, Team Building, Conflicts, Negotiation" },
-            { question: "Which of the following is NOT one of the Big Five personality traits?", options: ["Conscientiousness", "Machiavellianism", "Extroversion"], answer: "Machiavellianism" },
-            { question: "What are the two main factors influencing individual behavior?", options: ["The Person and The Environment of the Organization", "The Economy and Market Trends", "Government Policies and Laws"], answer: "The Person and The Environment of the Organization" },
-            { question: "Which of the following is a type of perception?", options: ["Social Perception", "Logical Perception", "Strategic Perception"], answer: "Social Perception" },
-            { question: "What are the three components of an attitude?", options: ["Cognition, Affect, Behavior", "Perception, Ethics, Personality", "Values, Job, Environment"], answer: "Cognition, Affect, Behavior" },
-            { question: "What are the three most important job-related attitudes?", options: ["Job satisfaction, Job involvement, Organizational commitment", "Perception, Attitudes, Ethics", "Promotion, Supervisors, Co-workers"], answer: "Job satisfaction, Job involvement, Organizational commitment" },
-            { question: "What are the five specific personality traits that impact behavior in organizations?", options: ["Locus of Control, Machiavellianism, Self-Esteem, Self-Monitoring, Risk Propensity", "Confidence, Charisma, Communication, Cooperation, Creativity"], answer: "Locus of Control, Machiavellianism, Self-Esteem, Self-Monitoring, Risk Propensity" }
+        const identifications = [
+            { description: "The process of organizing and interpreting sensory impressions to give meaning to the environment.", answer: "Perception" },
+            { description: "A long-lasting belief about what is important, worthwhile, and desirable.", answer: "Values" },
+            { description: "The general attitude that people have towards their job.", answer: "Job satisfaction" },
+            { description: "The degree to which a person is sociable, talkative, assertive, active, and ambitious.", answer: "Extroversion" },
+            { description: "A field of study that investigates the impact of individuals, groups, and structure on behavior within an organization.", answer: "Organizational Behavior" },
+            { description: "The mental and physical capabilities of an individual that affect behavior.", answer: "Skills and Abilities" },
+            { description: "The emotional, or feeling, segment of an attitude.", answer: "Affective Component" },
+            { description: "A personality trait describing individuals who try to do more in less time and pursue multiple tasks aggressively.", answer: "Type-A Behavior" },
+            { description: "A learning process in which individuals behave in ways that result in rewards and avoid those that result in punishments.", answer: "Operant Conditioning" },
+            { description: "The process of gathering, selecting, and interpreting information about how we view ourselves and others.", answer: "Social Perception" },
+            { description: "The extent to which employees identify with their job and actively participate in it.", answer: "Job Involvement" },
+            { description: "The degree to which an employee identifies with a particular organization and its goals.", answer: "Organizational Commitment" },
+            { description: "The belief that individuals control their own destiny.", answer: "Locus of Control" },
+            { description: "A personality trait where individuals put self-interest above group interest and manipulate others for personal gain.", answer: "Machiavellian Personality" },
+            { description: "The means or instruments that people believe they should use to attain their goals.", answer: "Instrumental Values" },
+            { description: "A personality dimension characterized by being reliable, dependable, organized, and careful.", answer: "Conscientiousness" },
+            { description: "When an individual experiences disagreement among values or between personal and organizational values.", answer: "Value Conflict" },
+            { description: "The degree to which an individual is anxious, depressed, angry, and insecure.", answer: "Emotional Stability" },
+            { description: "A key work-related value that defines an employee’s principles and moral guidelines.", answer: "Ethics" }
         ];
 
         function loadQuiz() {
-            const quizDiv = document.getElementById("quiz");
-            questions.forEach((q, index) => {
-                let questionHTML = `<div class='question'>${q.question}</div><ul class='options'>`;
-                q.options.forEach(option => {
-                    questionHTML += `<li><label><input type='radio' name='q${index}' value='${option}'> ${option}</label></li>`;
-                });
-                questionHTML += "</ul>";
-                quizDiv.innerHTML += questionHTML;
+            const identificationDiv = document.getElementById("identification");
+            identifications.forEach((item, index) => {
+                let idHTML = `<div class='question'>${item.description}</div><input type='text' id='id${index}' placeholder='Your answer'>`;
+                identificationDiv.innerHTML += idHTML;
             });
         }
 
         function submitQuiz() {
             let score = 0;
             let feedback = "";
-            questions.forEach((q, index) => {
-                const selected = document.querySelector(`input[name='q${index}']:checked`);
-                if (selected) {
-                    if (selected.value === q.answer) {
-                        score++;
-                    } else {
-                        feedback += `<p>Question ${index + 1}: Incorrect. The correct answer is: <strong>${q.answer}</strong></p>`;
-                    }
+            identifications.forEach((item, index) => {
+                const userAnswer = document.getElementById(`id${index}`).value.trim();
+                if (userAnswer.toLowerCase() === item.answer.toLowerCase()) {
+                    score++;
                 } else {
-                    feedback += `<p>Question ${index + 1}: No answer selected. The correct answer is: <strong>${q.answer}</strong></p>`;
+                    feedback += `<p>Identification ${index + 1}: Incorrect. The correct answer is: <strong>${item.answer}</strong></p>`;
                 }
             });
-            document.getElementById("result").innerHTML = `You scored ${score} out of ${questions.length}` + feedback;
+
+            document.getElementById("result").innerHTML = `You scored ${score} out of ${identifications.length}` + feedback;
         }
 
         loadQuiz();
