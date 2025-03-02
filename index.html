@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Exam</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .quiz-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        .question { font-weight: bold; margin: 20px 0; }
+        .options { list-style-type: none; padding: 0; }
+        .options li { margin: 10px 0; }
+        .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2>Online Quiz Exam</h2>
+        <div id="quiz"></div>
+        <button onclick="submitQuiz()">Submit</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What are the four aspects of individual behavior in Organizational Behavior?",
+                options: ["Personality, Perception, Learning, Motivation", "Norm roles, Team Buildings, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics"],
+                answer: "Personality, Perception, Learning, Motivation"
+            },
+            {
+                question: "Which of the following is NOT one of the Big Five personality traits?",
+                options: ["Conscientiousness", "Machiavellianism", "Extroversion"],
+                answer: "Machiavellianism"
+            },
+            {
+                question: "What are the three most important job-related attitudes?",
+                options: ["Job satisfaction, Job involvement, Organizational commitment", "Perception, Attitudes, Ethics", "Promotion, Supervisors, Co-workers"],
+                answer: "Job satisfaction, Job involvement, Organizational commitment"
+            }
+        ];
+
+        function loadQuiz() {
+            const quizDiv = document.getElementById("quiz");
+            questions.forEach((q, index) => {
+                let questionHTML = `<div class='question'>${q.question}</div><ul class='options'>`;
+                q.options.forEach(option => {
+                    questionHTML += `<li><label><input type='radio' name='q${index}' value='${option}'> ${option}</label></li>`;
+                });
+                questionHTML += "</ul>";
+                quizDiv.innerHTML += questionHTML;
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name='q${index}']:checked`);
+                if (selected && selected.value === q.answer) {
+                    score++;
+                }
+            });
+            document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+        }
+
+        loadQuiz();
+    </script>
+</body>
+</html>
