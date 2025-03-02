@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Quiz Exam</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .quiz-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
-        .question { font-weight: bold; margin: 20px 0; }
-        .options { list-style-type: none; padding: 0; }
-        .options li { margin: 10px 0; }
-        .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
-        .identification { margin: 20px 0; }
-        .correct { color: green; font-weight: bold; }
-        .incorrect { color: red; font-weight: bold; }
-        .answer { font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+       .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+       .question {
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+       .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+       .options li {
+            margin: 10px 0;
+        }
+
+       .result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+       .identification {
+            margin: 20px 0;
+        }
+
+       .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+       .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+       .answer {
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <div class="quiz-container">
         <h2>Online Quiz Exam</h2>
@@ -24,9 +66,9 @@
             <h3>Identification</h3>
             <p>Provide the correct term for each description:</p>
             <div id="identification"></div>
+            <button onclick="checkAnswers()">Submit Answers</button>
+            <div id="result"></div>
         </div>
-        <button onclick="calculateScore()">Submit</button>
-        <div id="final-result" class="result"></div>
     </div>
 
     <script>
@@ -36,62 +78,68 @@
             { description: "3. The general attitude that people have towards their job.", answers: ["Job satisfaction"] },
             { description: "4. The degree to which a person is sociable, talkative, assertive, active, and ambitious.", answers: ["Extroversion"] },
             { description: "5. A field of study that investigates the impact of individuals, groups, and structure on behavior within an organization.", answers: ["Organizational Behavior"] },
-            { description: "6. The mental and physical capabilities of an individual that affect behavior.", answers: ["Skills and Abilities"] },
-            { description: "7. The emotional, or feeling, segment of an attitude.", answers: ["Affective Component"] },
-            { description: "8. A personality trait describing individuals who try to do more in less time and pursue multiple tasks aggressively.", answers: ["Type-A Behavior"] },
-            { description: "9. A learning process in which individuals behave in ways that result in rewards and avoid those that result in punishments.", answers: ["Operant Conditioning"] },
-            { description: "10. The process of gathering, selecting, and interpreting information about how we view ourselves and others.", answers: ["Social Perception"] },
-            { description: "11. The extent to which employees identify with their job and actively participate in it.", answers: ["Job Involvement"] },
-            { description: "12. The degree to which an employee identifies with a particular organization and its goals.", answers: ["Organizational Commitment"] },
-            { description: "13. The belief that individuals control their own destiny.", answers: ["Locus of Control"] },
-            { description: "14. A personality trait where individuals put self-interest above group interest and manipulate others for personal gain.", answers: ["Machiavellian Personality"] },
-            { description: "15. The means or instruments that people believe they should use to attain their goals.", answers: ["Instrumental Values"] },
-            { description: "16. A personality dimension characterized by being reliable, dependable, organized, and careful.", answers: ["Conscientiousness"] },
-            { description: "17. When an individual experiences disagreement among values or between personal and organizational values.", answers: ["Value Conflict"] },
-            { description: "18. The degree to which an individual is anxious, depressed, angry, and insecure.", answers: ["Emotional Stability"] },
-            { description: "19. A key work-related value that defines an employee’s principles and moral guidelines.", answers: ["Ethics"] },
-            { description: "20. The study of how individuals and groups act within organizations.", answers: ["Organizational Behavior"] },
-            { description: "21. A set of norms and values shared by members of an organization.", answers: ["Organizational Culture"] },
-            { description: "22. The process of learning through the consequences of behavior.", answers: ["Operant Conditioning"] },
-            { description: "23. A person's ability to read and respond to social cues effectively.", answers: ["Self-Monitoring"] },
-            { description: "24. The natural inclination to take or avoid risks.", answers: ["Risk Propensity"] },
-            { description: "25. The capacity to recognize and manage one's emotions and those of others.", answers: ["Emotional Intelligence"] },
-            { description: "26. A psychological state that includes an individual's effort toward work goals.", answers: ["Motivation"] },
-            { description: "27. The ability to retain and use knowledge or skills over time.", answers: ["Learning"] },
-            { description: "28. A work-related behavior pattern characterized by competitiveness and urgency.", answers: ["Type-A Behavior"] },
-            { description: "29. The principles guiding moral decision-making in a workplace.", answers: ["Ethical Behavior"] },
-            { description: "30. The tendency of individuals to be either cooperative and trusting or manipulative and competitive.", answers: ["Agreeableness"] }
+            { description: "6. The ability to influence a group toward the achievement of a vision or set of goals.", answers: ["Leadership"] },
+            { description: "7. A person's belief in their ability to succeed in a specific situation.", answers: ["Self-efficacy"] },
+            { description: "8. The process of monitoring, comparing, and correcting work performance.", answers: ["Control"] },
+            { description: "9. The systematic process of defining problems, evaluating alternatives, and choosing optimal solutions.", answers: ["Decision making"] },
+            { description: "10. The tendency of people to resist change.", answers: ["Resistance to change"] },
+            { description: "11. The degree to which an employee identifies with a particular organization and its goals.", answers: ["Organizational commitment"] },
+            { description: "12. The study of people's efficiency in their working environment.", answers: ["Ergonomics"] },
+            { description: "13. The pattern of shared values, norms, and practices within an organization.", answers: ["Organizational culture"] },
+            { description: "14. The degree to which an individual feels engaged and invested in their job.", answers: ["Job involvement"] },
+            { description: "15. The mental process that arouses, sustains, and directs behavior toward a goal.", answers: ["Motivation"] },
+            { description: "16. A method of performance appraisal where feedback is gathered from multiple sources.", answers: ["360-degree feedback"] },
+            { description: "17. The emotional attachment an employee has to an organization.", answers: ["Affective commitment"] },
+            { description: "18. The process of matching an employee's skills and interests with job requirements.", answers: ["Job fit"] },
+            { description: "19. A leadership style that inspires and motivates followers to achieve beyond their own self-interests and reach their full potential.", answers: ["Transformational leadership"] },
+            { description: "20. A type of conflict that arises between two or more individuals.", answers: ["Interpersonal conflict"] },
+            { description: "21. The belief that one's work makes a meaningful contribution to the organization.", answers: ["Work engagement"] },
+            { description: "22. The level of enthusiasm and dedication a worker feels toward their job.", answers: ["Job engagement"] },
+            { description: "23. The extent to which employees trust and feel comfortable with management.", answers: ["Psychological safety"] },
+            { description: "24. A technique used to evaluate employee performance over time.", answers: ["Performance appraisal"] },
+            { description: "25. The alignment of individual and organizational values.", answers: ["Person-organization fit"] },
+            { description: "26. The process of setting goals and outlining steps to achieve them.", answers: ["Strategic planning"] },
+            { description: "27. A work arrangement where employees can perform their job outside of the traditional office", answers: ["Telecommuting"] }
         ];
 
-        function loadQuiz() {
-            const identificationDiv = document.getElementById("identification");
-            identifications.forEach((item, index) => {
-                let idHTML = `<div class='question'>${item.description}</div>
-                              <input type='text' id='id${index}' placeholder='Your answer' oninput='checkAnswer(${index})'>
-                              <span id='feedback${index}' class='answer'></span>`;
-                identificationDiv.innerHTML += idHTML;
+        function displayQuestions() {
+            const identificationDiv = document.getElementById('identification');
+            identifications.forEach((identification, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = identification.description;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = answer${index};
+
+                questionDiv.appendChild(input);
+                identificationDiv.appendChild(questionDiv);
             });
         }
 
-        function checkAnswer(index) {
-            const userAnswer = document.getElementById(`id${index}`).value.trim().toLowerCase();
-            const correctAnswers = identifications[index].answers.map(ans => ans.toLowerCase());
-            const feedbackSpan = document.getElementById(`feedback${index}`);
-            
-            if (correctAnswers.includes(userAnswer)) {
-                feedbackSpan.textContent = "✔ Correct";
-                feedbackSpan.className = "correct";
-            } else {
-                feedbackSpan.textContent = `✘ Incorrect. Answer: ${identifications[index].answers[0]}`;
-                feedbackSpan.className = "incorrect";
-            }
+        function checkAnswers() {
+            let correctCount = 0;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            identifications.forEach((identification, index) => {
+                const userAnswer = document.getElementById(answer${index}).value.toLowerCase();
+                const correctAnswers = identification.answers.map(answer => answer.toLowerCase());
+                const answerDiv = document.createElement('div');
+                if (correctAnswers.includes(userAnswer)) {
+                    answerDiv.innerHTML = <span class="correct">Correct! The answer is ${identification.answers.join(', ')}</span>;
+                    correctCount++;
+                } else {
+                    answerDiv.innerHTML = <span class="incorrect">Incorrect. The correct answer is ${identification.answers.join(', ')}</span>;
+                }
+                resultDiv.appendChild(answerDiv);
+            });
+            resultDiv.innerHTML += <p class="result">You got ${correctCount} out of ${identifications.length} correct.</p>;
         }
 
-        window.onload = function() {
-            loadQuiz();
-        };
+        displayQuestions();
     </script>
 </body>
-</html>
 
+</html>
 
