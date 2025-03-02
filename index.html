@@ -1,68 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Quiz Exam</title>
+    <title>Online Quiz</title>
     <style>
-        /* ... (Your CSS styles remain unchanged) ... */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .quiz-container {
+            width: 60%;
+            margin: auto;
+        }
+        .question {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+        }
     </style>
 </head>
-
 <body>
+    <h1>Online Quiz</h1>
     <div class="quiz-container">
-        <h2>Online Quiz Exam</h2>
-        <div class="identification">
-            <h3>Identification</h3>
-            <p>Provide the correct term for each description:</p>
-            <div id="identification"></div>
-            <button onclick="checkAnswers()">Submit Answers</button>
-            <div id="result"></div>
-        </div>
+        <form id="quizForm">
+            <div id="questions"></div>
+            <button type="button" onclick="submitQuiz()">Submit</button>
+        </form>
+        <p id="result"></p>
     </div>
 
     <script>
-        const identifications = [
-            { description: "1. The process of organizing and interpreting sensory impressions to give meaning to the environment.", answers: ["Perception"] },
-            { description: "2. A long-lasting belief about what is important, worthwhile, and desirable.", answers: ["Values"] },
-            { description: "3. The general attitude that people have towards their job.", answers: ["Job satisfaction"] },
-            { description: "4. The degree to which a person is sociable, talkative, assertive, active, and ambitious.", answers: ["Extroversion"] },
-            { description: "5. A field of study that investigates the impact of individuals, groups, and structure on behavior within an organization.", answers: ["Organizational Behavior"] },
-            { description: "6. The ability to influence a group toward the achievement of a vision or set of goals.", answers: ["Leadership"] },
-            { description: "7. A person's belief in their ability to succeed in a specific situation.", answers: ["Self-efficacy"] },
-            { description: "8. The process of monitoring, comparing, and correcting work performance.", answers: ["Control"] },
-            { description: "9. The systematic process of defining problems, evaluating alternatives, and choosing optimal solutions.", answers: ["Decision making"] },
-            { description: "10. The tendency of people to resist change.", answers: ["Resistance to change"] },
-            { description: "11. The degree to which an employee identifies with a particular organization and its goals.", answers: ["Organizational commitment"] },
-            { description: "12. The study of people's efficiency in their working environment.", answers: ["Ergonomics"] },
-            { description: "13. The pattern of shared values, norms, and practices within an organization.", answers: ["Organizational culture"] },
-            { description: "14. The degree to which an individual feels engaged and invested in their job.", answers: ["Job involvement"] },
-            { description: "15. The mental process that arouses, sustains, and directs behavior toward a goal.", answers: ["Motivation"] },
-            { description: "16. A method of performance appraisal where feedback is gathered from multiple sources.", answers: ["360-degree feedback"] },
-            { description: "17. The emotional attachment an employee has to an organization.", answers: ["Affective commitment"] },
-            { description: "18. The process of matching an employee's skills and interests with job requirements.", answers: ["Job fit"] },
-            { description: "19. A leadership style that inspires and motivates followers to achieve beyond their own self-interests and reach their full potential.", answers: ["Transformational leadership"] },
-            { description: "20. A type of conflict that arises between two or more individuals.", answers: ["Interpersonal conflict"] },
-            { description: "21. The belief that one's work makes a meaningful contribution to the organization.", answers: ["Work engagement"] },
-            { description: "22. The level of enthusiasm and dedication a worker feels toward their job.", answers: ["Job engagement"] },
-            { description: "23. The extent to which employees trust and feel comfortable with management.", answers: ["Psychological safety"] },
-            { description: "24. A technique used to evaluate employee performance over time.", answers: ["Performance appraisal"] },
-            { description: "25. The alignment of individual and organizational values.", answers: ["Person-organization fit"] },
-            { description: "26. The process of setting goals and outlining steps to achieve them.", answers: ["Strategic planning"] },
-            { description: "27. A work arrangement where employees can perform their job outside of the traditional office.", answers: ["Telecommuting", "Remote work"] }
+        const questions = [
+            "1. What is the study of how people behave in the workplace?",
+            "2. What term refers to how individuals, groups, and structures impact an organization’s effectiveness?",
+            "3. What are the four components of individual behavior in Organizational Behavior?",
+            "4. What are the four group behaviors studied in Organizational Behavior?",
+            "5. What is the first goal of Organizational Behavior, which emphasizes productivity and reducing absenteeism?",
+            "6. What term refers to behaviors that contribute to the overall effectiveness of an organization but are not part of an employee’s formal job requirements?",
+            "7. What are the three components of an attitude?",
+            "8. Which component of an attitude refers to a person's beliefs, opinions, knowledge, and information?",
+            "9. Which component of an attitude is the emotional or feeling aspect?",
+            "10. Which job-related attitudes are considered the most important in Organizational Behavior?",
+            "11. What personality trait refers to an individual’s sense of control over their life?",
+            "12. What personality trait describes a person who manipulates others for personal gain?",
+            "13. What personality trait measures an individual’s ability to adapt behavior based on the environment?",
+            "14. What personality trait refers to an individual's confidence in their own worth?",
+            "15. What personality trait describes how much risk a person is willing to take?",
+            "16. What is the process of organizing and interpreting sensory impressions to give meaning to the environment?",
+            "17. What are the 10 factors that influence perception in the work environment?",
+            "18. What type of learning occurs when a person behaves in a certain way to obtain rewards or avoid punishment?",
+            "19. What are the two main factors that influence individual behavior?",
+            "20. What are the five minor factors that explain employee behavior?",
+            "21. What term refers to the mental and physical capabilities that impact an individual's performance?",
+            "22. Which personality dimension in the Big Five is most strongly correlated with job performance?",
+            "23. What term describes people who are sociable, talkative, and assertive?",
+            "24. What term refers to how imaginative, curious, and open to new experiences a person is?",
+            "25. What term refers to the degree of anxiety, depression, or emotional instability a person has?",
+            "26. What personality trait in the Big Five describes a person who is courteous, good-natured, and flexible?",
+            "27. What type of perception focuses on interpreting information about physical objects rather than people?",
+            "28. What is the general attitude people have toward their job?",
+            "29. What are the five main factors that contribute to job satisfaction?",
+            "30. What are the three basic models of Organizational Behavior?"
         ];
-
-        function displayQuestions() {
-            
+        
+        function loadQuestions() {
+            const questionContainer = document.getElementById("questions");
+            questions.forEach((question, index) => {
+                const div = document.createElement("div");
+                div.classList.add("question");
+                div.innerHTML = `<strong>${question}</strong><br><input type='text' name='q${index + 1}'>`;
+                questionContainer.appendChild(div);
+            });
         }
-
-        function checkAnswers() {
-          
+        
+        function submitQuiz() {
+            const form = document.getElementById("quizForm");
+            let answers = {};
+            for (let i = 1; i <= 30; i++) {
+                answers[`q${i}`] = form[`q${i}`].value;
+            }
+            console.log("User Answers:", answers);
+            document.getElementById("result").innerText = "Quiz submitted!";
         }
-
-        displayQuestions();
+        
+        window.onload = loadQuestions;
     </script>
 </body>
-
 </html>
