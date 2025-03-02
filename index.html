@@ -12,19 +12,21 @@
         .options li { margin: 10px 0; }
         .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
         .identification { margin: 20px 0; }
+        .correct { color: green; font-weight: bold; }
+        .incorrect { color: red; font-weight: bold; }
+        .answer { font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h2>Online Quiz Exam</h2>
-        <div id="quiz"></div>
         <div class="identification">
             <h3>Identification</h3>
             <p>Provide the correct term for each description:</p>
             <div id="identification"></div>
         </div>
-        <button onclick="submitQuiz()">Submit</button>
-        <div id="result" class="result"></div>
+        <button onclick="calculateScore()">Submit</button>
+        <div id="final-result" class="result"></div>
     </div>
 
     <script>
@@ -32,7 +34,7 @@
             { description: "1. The process of organizing and interpreting sensory impressions to give meaning to the environment.", answers: ["Perception"] },
             { description: "2. A long-lasting belief about what is important, worthwhile, and desirable.", answers: ["Values"] },
             { description: "3. The general attitude that people have towards their job.", answers: ["Job satisfaction"] },
-            { description: "4. The degree to which a person is sociable, talkative, assertive, active, and ambitious.", answers: ["Extroversion", "Introversion/Extroversion", "Extroversion/Introversion"] },
+            { description: "4. The degree to which a person is sociable, talkative, assertive, active, and ambitious.", answers: ["Extroversion"] },
             { description: "5. A field of study that investigates the impact of individuals, groups, and structure on behavior within an organization.", answers: ["Organizational Behavior"] },
             { description: "6. The mental and physical capabilities of an individual that affect behavior.", answers: ["Skills and Abilities"] },
             { description: "7. The emotional, or feeling, segment of an attitude.", answers: ["Affective Component"] },
@@ -49,43 +51,38 @@
             { description: "18. The degree to which an individual is anxious, depressed, angry, and insecure.", answers: ["Emotional Stability"] },
             { description: "19. A key work-related value that defines an employee’s principles and moral guidelines.", answers: ["Ethics"] },
             { description: "20. The study of how individuals and groups act within organizations.", answers: ["Organizational Behavior"] },
-            { description: "21. The process through which individuals change their behavior based on experience.", answers: ["Learning"] },
-            { description: "22. A set of norms and values shared by members of an organization.", answers: ["Organizational Culture"] },
-            { description: "23. The ability of an individual to read and adapt to social cues in different situations.", answers: ["Self-Monitoring"] },
+            { description: "21. A set of norms and values shared by members of an organization.", answers: ["Organizational Culture"] },
+            { description: "22. The process of learning through the consequences of behavior.", answers: ["Operant Conditioning"] },
+            { description: "23. A person's ability to read and respond to social cues effectively.", answers: ["Self-Monitoring"] },
             { description: "24. The natural inclination to take or avoid risks.", answers: ["Risk Propensity"] },
-            { description: "25. The process by which individuals create a mental image of their environment.", answers: ["Perception"] },
-            { description: "26. The capacity of an individual to feel and understand the emotions of others.", answers: ["Emotional Intelligence"] },
-            { description: "27. A work-related trait that involves persistence and effort towards achieving goals.", answers: ["Conscientiousness"] },
-            { description: "28. The extent to which individuals believe they can control their own fate.", answers: ["Locus of Control"] },
-            { description: "29. A behavioral style where individuals are more relaxed and less time-urgent.", answers: ["Type-B Behavior"] },
-            { description: "30. The conflict that arises when an individual's personal values clash with those of an organization.", answers: ["Value Conflict"] }
+            { description: "25. The capacity to recognize and manage one's emotions and those of others.", answers: ["Emotional Intelligence"] },
+            { description: "26. A psychological state that includes an individual's effort toward work goals.", answers: ["Motivation"] },
+            { description: "27. The ability to retain and use knowledge or skills over time.", answers: ["Learning"] },
+            { description: "28. A work-related behavior pattern characterized by competitiveness and urgency.", answers: ["Type-A Behavior"] },
+            { description: "29. The principles guiding moral decision-making in a workplace.", answers: ["Ethical Behavior"] },
+            { description: "30. The tendency of individuals to be either cooperative and trusting or manipulative and competitive.", answers: ["Agreeableness"] }
         ];
 
-        function loadQuiz() {
-            const identificationDiv = document.getElementById("identification");
-            identifications.forEach((item, index) => {
-                let idHTML = `<div class='question'>${item.description}</div><input type='text' id='id${index}' placeholder='Your answer'>`;
-                identificationDiv.innerHTML += idHTML;
-            });
-        }
-
-        function submitQuiz() {
+        function calculateScore() {
             let score = 0;
-            let feedback = "";
             identifications.forEach((item, index) => {
                 const userAnswer = document.getElementById(`id${index}`).value.trim().toLowerCase();
-                const correctAnswers = item.answers.map(ans => ans.toLowerCase());
-                if (correctAnswers.includes(userAnswer)) {
+                if (item.answers.map(ans => ans.toLowerCase()).includes(userAnswer)) {
                     score++;
-                } else {
-                    feedback += `<p>Identification ${index + 1}: Incorrect. The correct answers are: <strong>${item.answers.join(" / ")}</strong></p>`;
                 }
             });
-
-            document.getElementById("result").innerHTML = `You scored ${score} out of ${identifications.length}` + feedback;
+            
+            let percentage = (score / identifications.length) * 100;
+            let message = percentage === 100 ? "ANG TALINO MO! Proud ako sayo at sana maging proud karin sa sarili mo" :
+                          percentage >= 90 ? "Gagi ang talino mo naman, sanaol" :
+                          percentage >= 80 ? "Sana ol naga aral" :
+                          percentage < 50 ? "Gagi pre bagsak ka, bawi nalang next time" : "Good effort!";
+            
+            document.getElementById("final-result").innerHTML = `You scored ${percentage.toFixed(2)}%. ${message}`;
         }
 
         loadQuiz();
     </script>
 </body>
 </html>
+
