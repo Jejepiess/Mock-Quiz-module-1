@@ -63,26 +63,33 @@
             { description: "30. The tendency of individuals to be either cooperative and trusting or manipulative and competitive.", answers: ["Agreeableness"] }
         ];
 
-        function calculateScore() {
-            let score = 0;
+        function loadQuiz() {
+            const identificationDiv = document.getElementById("identification");
             identifications.forEach((item, index) => {
-                const userAnswer = document.getElementById(`id${index}`).value.trim().toLowerCase();
-                if (item.answers.map(ans => ans.toLowerCase()).includes(userAnswer)) {
-                    score++;
-                }
+                let idHTML = `<div class='question'>${item.description}</div>
+                              <input type='text' id='id${index}' placeholder='Your answer' oninput='checkAnswer(${index})'>
+                              <span id='feedback${index}' class='answer'></span>`;
+                identificationDiv.innerHTML += idHTML;
             });
+        }
+
+        function checkAnswer(index) {
+            const userAnswer = document.getElementById(`id${index}`).value.trim().toLowerCase();
+            const correctAnswers = identifications[index].answers.map(ans => ans.toLowerCase());
+            const feedbackSpan = document.getElementById(`feedback${index}`);
             
-            let percentage = (score / identifications.length) * 100;
-            let message = percentage === 100 ? "ANG TALINO MO! Proud ako sayo at sana maging proud karin sa sarili mo" :
-                          percentage >= 90 ? "Gagi ang talino mo naman, sanaol" :
-                          percentage >= 80 ? "Sana ol naga aral" :
-                          percentage < 50 ? "Gagi pre bagsak ka, bawi nalang next time" : "Good effort!";
-            
-            document.getElementById("final-result").innerHTML = `You scored ${percentage.toFixed(2)}%. ${message}`;
+            if (correctAnswers.includes(userAnswer)) {
+                feedbackSpan.textContent = "✔ Correct";
+                feedbackSpan.className = "correct";
+            } else {
+                feedbackSpan.textContent = `✘ Incorrect. Answer: ${identifications[index].answers[0]}`;
+                feedbackSpan.className = "incorrect";
+            }
         }
 
         loadQuiz();
     </script>
 </body>
 </html>
+
 
