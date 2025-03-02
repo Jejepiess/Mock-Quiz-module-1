@@ -23,21 +23,15 @@
 
     <script>
         const questions = [
-            {
-                question: "What are the four aspects of individual behavior in Organizational Behavior?",
-                options: ["Personality, Perception, Learning, Motivation", "Norm roles, Team Buildings, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics"],
-                answer: "Personality, Perception, Learning, Motivation"
-            },
-            {
-                question: "Which of the following is NOT one of the Big Five personality traits?",
-                options: ["Conscientiousness", "Machiavellianism", "Extroversion"],
-                answer: "Machiavellianism"
-            },
-            {
-                question: "What are the three most important job-related attitudes?",
-                options: ["Job satisfaction, Job involvement, Organizational commitment", "Perception, Attitudes, Ethics", "Promotion, Supervisors, Co-workers"],
-                answer: "Job satisfaction, Job involvement, Organizational commitment"
-            }
+            { question: "What is Organizational Behavior concerned with?", options: ["The actions of people at work", "The study of markets", "The development of products"], answer: "The actions of people at work" },
+            { question: "What are the four aspects of individual behavior in Organizational Behavior?", options: ["Personality, Perception, Learning, Motivation", "Norm roles, Team Building, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics"], answer: "Personality, Perception, Learning, Motivation" },
+            { question: "What are the four group behaviors Organizational Behavior focuses on?", options: ["Norm roles, Team Building, Conflicts, Negotiation", "Skills, Abilities, Values, Ethics", "Personality, Perception, Learning, Motivation"], answer: "Norm roles, Team Building, Conflicts, Negotiation" },
+            { question: "Which of the following is NOT one of the Big Five personality traits?", options: ["Conscientiousness", "Machiavellianism", "Extroversion"], answer: "Machiavellianism" },
+            { question: "What are the two main factors influencing individual behavior?", options: ["The Person and The Environment of the Organization", "The Economy and Market Trends", "Government Policies and Laws"], answer: "The Person and The Environment of the Organization" },
+            { question: "Which of the following is a type of perception?", options: ["Social Perception", "Logical Perception", "Strategic Perception"], answer: "Social Perception" },
+            { question: "What are the three components of an attitude?", options: ["Cognition, Affect, Behavior", "Perception, Ethics, Personality", "Values, Job, Environment"], answer: "Cognition, Affect, Behavior" },
+            { question: "What are the three most important job-related attitudes?", options: ["Job satisfaction, Job involvement, Organizational commitment", "Perception, Attitudes, Ethics", "Promotion, Supervisors, Co-workers"], answer: "Job satisfaction, Job involvement, Organizational commitment" },
+            { question: "What are the five specific personality traits that impact behavior in organizations?", options: ["Locus of Control, Machiavellianism, Self-Esteem, Self-Monitoring, Risk Propensity", "Confidence, Charisma, Communication, Cooperation, Creativity"], answer: "Locus of Control, Machiavellianism, Self-Esteem, Self-Monitoring, Risk Propensity" }
         ];
 
         function loadQuiz() {
@@ -54,13 +48,20 @@
 
         function submitQuiz() {
             let score = 0;
+            let feedback = "";
             questions.forEach((q, index) => {
                 const selected = document.querySelector(`input[name='q${index}']:checked`);
-                if (selected && selected.value === q.answer) {
-                    score++;
+                if (selected) {
+                    if (selected.value === q.answer) {
+                        score++;
+                    } else {
+                        feedback += `<p>Question ${index + 1}: Incorrect. The correct answer is: <strong>${q.answer}</strong></p>`;
+                    }
+                } else {
+                    feedback += `<p>Question ${index + 1}: No answer selected. The correct answer is: <strong>${q.answer}</strong></p>`;
                 }
             });
-            document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+            document.getElementById("result").innerHTML = `You scored ${score} out of ${questions.length}` + feedback;
         }
 
         loadQuiz();
